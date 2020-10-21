@@ -81,7 +81,7 @@ def respond(message):
 # send_message("what if you could be anything you wanted")
 print("Hello user, i'm Eliza")
 while True:
-    said = input('> ')
+    said = input('\033[92m >  \033[0m')
     response = respond(said)
     print(response)
     if response.split(" ")[0] == "Goodbye.":

@@ -3,7 +3,7 @@ import re
 import nltk
 from nltk.corpus import wordnet
 
-#TODO A continuer
+# TODO A continuer
 
 mafia = wordnet.synsets("mafia")
 afraid = wordnet.synsets("danger")
@@ -15,15 +15,34 @@ bot_template = "BOT : {0}"
 user_template = "USER : {0}"
 peur_terms = "mafia|police|kill|threat|danger"
 colere_terms = "paranoid|crazy"
-rules = {'[D|d]o you think (.*)': ['if {0}? Absolutely.', 'No chance'],
+rules = {'[H|h]i|ello': ["Hello.",
+                         "Hi."],
+         '[D|d]o you think (.*)': ['if {0}? Absolutely.', 'No chance'],
          '[D|d]o you remember (.*)': ['Did you think I would forget {0}',
-                                  "Why haven't you been able to forget {0}", 'What about {0}', 'Yes .. and?'],
+                                      "Why haven't you been able to forget {0}", 'What about {0}', 'Yes .. and?'],
          'I want (.*)': ['What would it mean if you got {0}', 'Why do you want {0}', "What's stopping you from getting {0}"],
          'if (.*)': ["Do you really think it's likely that {0}", 'Do you wish that {0}', 'What do you think about {0}', 'Really--if {0}'],
          'Are you (.*)': ["Do you think i'm {0}"],
-         '[h|H]ow are you (.*)': ["OK", "I'm tired"],
-         '[w|W]ork' : ["I work in the post office"],
-         '[P|p]olice|cop[s]?' : ["Cops don't do their job"]
+         '[W|w]hy don\'t you (.*)': [" Do you believe I don't {0} ?",
+                                     "Perhaps I will {0} in good time.",
+                                     "Should you {0} yourself ?",
+                                     "You want me to {0} ?"],
+         '[B|b]ye': ["Goodbye. Thank you for talking to me."],
+         '[S|s]orry': ["Please don't apologise.",
+                       "Apologies are not necessary.",
+                       "I've told you that apologies are not required."],
+         'age|old': ["I'm 28 years old"],
+         'family|spouse|married': ["I ride alone", "I live alone"],
+         '[h|H]ow are you (.*)': ["OK", "I'm tired {0}"],
+         '[w|W]ork': ["I work in the post office"],
+         '[P|p]olice|cop[s]?': ["Cops don't do their job"],
+         'name': ["I'm Frank Smith", "My name is Frank Smith"],
+         '[W|w]hy are you (.*)': ["I souldn't be {0}", "Tt is independent of my own will."],
+         '[W|w]ho (.*)': ["The police {0}"],
+         'arrest': ["The law should arrest the bad people."],
+         'bad': ["I try to stay clean."],
+         'Mafa': ["I'm trying to stay out of their buissnes, but it's not easy"],
+         '[A|a]re you sure': ["You don't believe me ?"]
          }
 
 
@@ -34,13 +53,15 @@ def send_message(message):
     response = respond(message)
     # Print the bot template including the bot's response.
     print(bot_template.format(response))
+    print("##################################################")
     print("colere:", colere)
     print("mefiance:", mefiance)
     print("peur:", peur)
+    print("##################################################")
 
 
 def match_rule(rules, message):
-    response, phrase = "default", None
+    response, phrase = "In what whay ?", message
 
     # Iterate over the rules dictionary
     for pattern, responses in rules.items():
@@ -95,17 +116,24 @@ def augmenteColere():
     if(colere >= 20):
         colere = 20
 
+
 def malveillance(noun):
+    distanceDegree = 0.5
     syns = wordnet.synsets(noun)
+    if(len(syns) == 0):
+        return
     distance = mafia[0].wup_similarity(syns[0])
-    if distance > 0.3:
+    if distance is None:
+        return
+    if distance > distanceDegree:
         augmentePeur()
     distance = afraid[0].wup_similarity(syns[0])
-    if distance > 0.3:
+    if distance > distanceDegree:
         augmentePeur()
     distance = angry[0].wup_similarity(syns[0])
-    if distance > 0.3:
+    if distance > distanceDegree:
         augmenteColere()
+
 
 def bienveillance():
     global colere
@@ -113,7 +141,7 @@ def bienveillance():
     global mefiance
     colere -= 1
     peur -= 0.5
-    mefiance -= 0.2
+    mefiance -= 0.4
     if(colere <= 0):
         colere = 0
     if(mefiance <= 0):
@@ -121,14 +149,17 @@ def bienveillance():
     if(peur <= 0):
         peur = 0
 
-#TODO ne pas faire bienviellance si malviellance augmente
+
 def humeur(phrase, response):
-    is_noun = lambda pos: pos[:2] == 'NN'
+    global mefiance
+    tmp = mefiance
+    def is_noun(pos): return pos[:2] == 'NN'
     tokenized = nltk.word_tokenize(phrase + " " + response)
-    nouns = [word for (word, pos) in nltk.pos_tag(tokenized) if is_noun(pos)] 
+    nouns = [word for (word, pos) in nltk.pos_tag(tokenized) if is_noun(pos)]
     for noun in nouns:
         malveillance(noun)
-    bienveillance()
+    if(mefiance == tmp):
+        bienveillance()
 
 
 def respond(message):
@@ -140,14 +171,31 @@ def respond(message):
         # Include the phrase in the response
         response = response.format(phrase)
     # Change état
-    if(phrase is not None and response is not None):
-        humeur(phrase, response)
+    humeur(phrase, response)
     return response
 #####################################################
 
-send_message("Hello sir, how are you feeling today ?")
-send_message("What can of job are you working for ?")
-send_message("Do you remember why your in hospital ?")
-send_message("Are you in danger ?")
-send_message("Are you crazy ?")
-send_message("Are you in trouble with the police ?")
+
+# send_message("Hello sir, how are you feeling today ?")
+# send_message("How old are you ?")
+# send_message("What about you family ?")
+# send_message("How old are you ?")
+# send_message("What can of job are you working for ?")
+# send_message("Do you remember why your in hospital ?")
+# send_message("Are you in danger ?")
+# send_message("Are you crazy ?")
+# send_message("Are you in trouble with the police ?")
+while True:
+    said = input('> ')
+    if(mefiance > 9):
+        print('\033[92m', "I don't want to talk to you anymore, goodbye.", '\033[0m')
+        break
+    response = respond(said)
+    print('\033[92m', response, '\033[0m')
+    print("##################################################")
+    print("colere:", colere)
+    print("mefiance:", mefiance)
+    print("peur:", peur)
+    print("##################################################")
+    if response.split(" ")[0] == "Goodbye.":
+        break
