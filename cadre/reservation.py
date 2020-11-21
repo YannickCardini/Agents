@@ -6,7 +6,46 @@ from geotext import GeoText
 DESTINATION_CITY = None
 DEPART_CITY = None
 DEPART_TIME = None
+RETURN_TIME = None
 RESERVATION_NAME = None
+
+def confirmationFlight():
+    global DESTINATION_CITY
+    global DEPART_CITY
+    global DEPART_TIME
+    global RETURN_TIME
+    global RESERVATION_NAME
+    sentence_end = " returning on " + str(RETURN_TIME) + " ?" if RETURN_TIME is not None else " ?"
+    print("Do you want to go from "+ DEPART_CITY + " to " + DESTINATION_CITY + " on " + str(DEPART_TIME) + sentence_end)
+    yesNo = input()
+    yes = re.match('^[Y|y]es$',yesNo)
+    no = re.match('^[N|n]o$',yesNo)
+    if(no):
+        DESTINATION_CITY = None
+        DEPART_CITY = None
+        DEPART_TIME = None
+        RETURN_TIME = None
+        RESERVATION_NAME = None
+        main()
+    elif(yes):
+        print("I have confirmed the following flight: flight " + str(randint(100, 500)) + " on " + str(DEPART_TIME) + " from " + DEPART_CITY + " to " + DESTINATION_CITY )
+        if(RETURN_TIME is not None):
+            print("and the return flight on " + str(RETURN_TIME))
+        print("Thanks you for booking with me. Goodbye.")
+    else:
+        confirmationFlight()
+
+
+def retour():
+    print("What date do you want to return ?")
+    returnDate = input()
+    matches = list(datefinder.find_dates(returnDate))
+    if len(matches) > 0:
+        global RETURN_TIME
+        RETURN_TIME = matches[0]
+        confirmationFlight()
+    else:
+        retour()
 
 def isItOneWayTrip():
     print("Is it a one-way trip ?")
@@ -14,9 +53,9 @@ def isItOneWayTrip():
     yes = re.match('^[Y|y]es$',yesNo)
     no = re.match('^[N|n]o$',yesNo)
     if(yes):
-        print("I have confirmed the following flight: flight " + str(randint(100, 500)) + " on " + str(DEPART_TIME) + " from " + DEPART_CITY + " to " + DESTINATION_CITY + " .Thanks you for booking with me. Goodbye.")
+        confirmationFlight()
     elif(no):
-        print("relou")
+        retour()
     else:
         isItOneWayTrip()
 
