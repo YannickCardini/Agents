@@ -3,18 +3,13 @@ import random
 
 def aspirateur(EMPLACEMENT,ETAT,OBSTACLE):
     if(ETAT == "sale"):
-        return ("stop","aspirer")
+        return "aspirer"
     else:
-        if(EMPLACEMENT == "A"):
-            if(OBSTACLE):
-                return ("stop","droite")
-            else:
-                return ("avancer","droite")
+        if(OBSTACLE):
+            return ("stop")
         else:
-            if(OBSTACLE):
-                return ("stop","gauche")
-            else:
-                return ("avancer","gauche")
+            return ("avancer")
+
 
 EMPLACEMENT_ARR = ["A","B"]
 ETAT_ARR = ["sale","propre"]
@@ -27,8 +22,9 @@ for i in range(0,10):
     print("EMPLACEMENT : ", EMPLACEMENT," ETAT : ", ETAT, "OBSTACLE : ", OBSTACLE )
     actionAspirateur = aspirateur(EMPLACEMENT,ETAT,OBSTACLE)
     print("ACTION ASPIRATEUR : ", actionAspirateur)
-    if(actionAspirateur[1] == "droite" & actionAspirateur[0] == "avancer"):
-        EMPLACEMENT = "B"
-    elif(actionAspirateur[1] == "gauche" & actionAspirateur[0] == "avancer"):
-        EMPLACEMENT = "A"
+    if(actionAspirateur == "avancer"):
+        if(EMPLACEMENT == "A"):
+            EMPLACEMENT = "B"
+        else:
+            EMPLACEMENT = "A"
 

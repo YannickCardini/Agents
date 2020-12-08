@@ -15,31 +15,31 @@ A chaque répétition un état (propre ou sale) ainsi qu'un obstacle (true ou fa
 2. Si il n'y a pas d'obstacle
 3. Si l'état est propre
 
-Il avance à droite
+Il avance à la salle B
 
 1. Si l'aspirateur se trouve dans la salle B
 2. Si il n'y a pas d'obstacle
 3. Si l'état est propre
 
-Il avance à gauche
+Il avance à la salle A
 
 1. Si l'aspirateur se trouve dans la salle A
 2. Si il y a un obstacle
 3. Si l'état est propre
 
-Il se stope à droite
+Il se stoppe 
 
 1. Si l'aspirateur se trouve dans la salle B
 2. Si il y a un obstacle
 3. Si l'état est propre
 
-Il se stope à gauche
+Il se stoppe 
 
 1. Si l'aspirateur se trouve dans la salle A ou B
 2. Si il y a un obstacle ou si il y en pas
 3. Si l'état est sale
 
-Il se stope et aspire
+Il se stoppe et aspire
 
 
 
