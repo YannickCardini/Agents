@@ -7,7 +7,7 @@ python3 aspirateur.py
 ```
 ## Fonctionnement:
 
-L'aspirateur est initialement dans une sale aléatoire qui aléatoirement propre ou sale.
+L'aspirateur est initialement dans une salle aléatoire qui est aléatoirement propre ou sale.
 
 ### Si la salle est sale
 
