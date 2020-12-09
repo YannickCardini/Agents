@@ -4,8 +4,7 @@ A very basic air travel system:
 - It asks the user the city of departure
 - It asks for a destination city
 - It asks for a date
-- He asks if the trip is round trip or
-no
+- He asks if the trip is round trip or no
 
 ## Dependencies
 

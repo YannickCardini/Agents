@@ -49,3 +49,4 @@ lastAction = None
 while lastAction != "GOAL ACHIEVE":
     lastAction = aspirateur(ETAT,lastAction)
     print(ETAT)
+print("GOAL ACHIEVE !")
