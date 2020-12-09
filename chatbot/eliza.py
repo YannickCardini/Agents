@@ -18,6 +18,10 @@ rules = {
                   "I've told you that apologies are not required."]
 }
 
+violence_words = ['kill', 'protection', 'gun','guns', 'barrel', 'killer',
+                  'killing', 'crime', 'prowlers', 'bullets', 'criminal', 'shotgun',
+                  'shot', 'gunpowder']
+
 
 def getDefault():
     return random.choice([
@@ -74,6 +78,12 @@ def respond(message):
     return response
 
 
+def need_help(sentence):
+    for word in violence_words:
+        if word in sentence:
+            return True
+    return False
+
 # Send the messages
 # send_message("do you remember your last birthday")
 # send_message("do you think humans should be worried about AI")
@@ -82,6 +92,9 @@ def respond(message):
 print("Hello user, i'm Eliza")
 while True:
     said = input('\033[92m >  \033[0m')
+    if(need_help(said)):
+        print("This kind of problem requires the call of a professional, please contact the 09 72 39 40 50 immediately.")
+        break
     response = respond(said)
     print(response)
     if response.split(" ")[0] == "Goodbye.":

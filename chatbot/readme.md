@@ -3,6 +3,10 @@
 This is a little version of ELIZA, a famous natural-language AI demo from the 1960s.
 The program doesn't have a clue what it is saying and it's not difficult to catch it out.
 
+# Improvement
+
+If the user is using a word from the violence lexical field, like "*I want to kill myself*", Eliza will redirect him to a professional.
+
 ## Example
 
 ```text
@@ -23,7 +27,15 @@ Really--if me could disappear ?
 I've told you that apologies are not required.
 > Goodbye eliza
 Goodbye. Thank you for talking to me.
+
+###################################################
+
+Hello user, i'm Eliza
+ >  I have a gun, i'm going to shoot
+This kind of problem requires the call of a professional, please contact the 09 72 39 40 50 immediately.
 ```
+
+
 
 # Parry
 
